@@ -56,20 +56,49 @@ public class SageMakerController {
     
     @PostMapping("/test")
     public ResponseEntity<Map<String, String>> testRegression() {
-        // 간단한 regression 테스트 데이터
-        String testData = "{\"instances\": [[1.0, 2.0, 3.0, 4.0]]}";
+        // 실제 SageMaker Async Endpoint 테스트
+        String endpointName = "test-async-endpoint2";
+        String testData = "{\"instances\": [[1.0, 2.0], [3.0, -1.0], [-0.5, 1.5]]}";
         
         try {
-            String outputLocation = sageMakerService.invokeAsyncEndpoint("your-endpoint-name", testData);
+            String outputLocation = sageMakerService.invokeAsyncEndpoint(endpointName, testData);
             return ResponseEntity.ok(Map.of(
                 "status", "success",
+                "endpointName", endpointName,
                 "testData", testData,
-                "outputLocation", outputLocation
+                "outputLocation", outputLocation,
+                "message", "Async inference started successfully"
             ));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(Map.of(
                 "status", "error",
+                "endpointName", endpointName,
                 "message", e.getMessage()
+            ));
+        }
+    }
+    
+    @PostMapping("/test-real")
+    public ResponseEntity<Map<String, String>> testRealEndpoint() {
+        // 실제 엔드포인트로 테스트
+        String endpointName = "test-async-endpoint2";
+        String testData = "{\"instances\": [[1.0, 2.0], [3.0, -1.0], [-0.5, 1.5], [2.5, 0.8], [-1.2, 3.4]]}";
+        
+        try {
+            String outputLocation = sageMakerService.invokeAsyncEndpoint(endpointName, testData);
+            return ResponseEntity.ok(Map.of(
+                "status", "success",
+                "endpointName", endpointName,
+                "testData", testData,
+                "outputLocation", outputLocation,
+                "timestamp", String.valueOf(System.currentTimeMillis())
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of(
+                "status", "error",
+                "endpointName", endpointName,
+                "message", e.getMessage(),
+                "timestamp", String.valueOf(System.currentTimeMillis())
             ));
         }
     }
