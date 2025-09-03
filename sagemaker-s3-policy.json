@@ -1,0 +1,26 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "sagemaker-runtime:InvokeEndpointAsync",
+        "sagemaker-runtime:InvokeEndpoint"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:DeleteObject",
+        "s3:ListBucket"
+      ],
+      "Resource": [
+        "arn:aws:s3:::greenenergy-ai-app-d-an2-s3-gem",
+        "arn:aws:s3:::greenenergy-ai-app-d-an2-s3-gem/*"
+      ]
+    }
+  ]
+}
