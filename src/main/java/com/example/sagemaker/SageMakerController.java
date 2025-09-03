@@ -56,9 +56,9 @@ public class SageMakerController {
     
     @PostMapping("/test")
     public ResponseEntity<Map<String, String>> testRegression() {
-        // 실제 SageMaker Async Endpoint 테스트
-        String endpointName = "test-async-endpoint2";
-        String testData = "{\"instances\": [[1.0, 2.0], [3.0, -1.0], [-0.5, 1.5]]}";
+        // test-async-endpoint3로 테스트
+        String endpointName = "test-async-endpoint3";
+        String testData = "{\"instances\": [[1.0, 2.0]]}";
         
         try {
             String outputLocation = sageMakerService.invokeAsyncEndpoint(endpointName, testData);
@@ -74,31 +74,6 @@ public class SageMakerController {
                 "status", "error",
                 "endpointName", endpointName,
                 "message", e.getMessage()
-            ));
-        }
-    }
-    
-    @PostMapping("/test-real")
-    public ResponseEntity<Map<String, String>> testRealEndpoint() {
-        // 실제 엔드포인트로 테스트
-        String endpointName = "test-async-endpoint2";
-        String testData = "{\"instances\": [[1.0, 2.0], [3.0, -1.0], [-0.5, 1.5], [2.5, 0.8], [-1.2, 3.4]]}";
-        
-        try {
-            String outputLocation = sageMakerService.invokeAsyncEndpoint(endpointName, testData);
-            return ResponseEntity.ok(Map.of(
-                "status", "success",
-                "endpointName", endpointName,
-                "testData", testData,
-                "outputLocation", outputLocation,
-                "timestamp", String.valueOf(System.currentTimeMillis())
-            ));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(Map.of(
-                "status", "error",
-                "endpointName", endpointName,
-                "message", e.getMessage(),
-                "timestamp", String.valueOf(System.currentTimeMillis())
             ));
         }
     }

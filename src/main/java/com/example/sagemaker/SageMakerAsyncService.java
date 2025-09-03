@@ -42,7 +42,7 @@ public class SageMakerAsyncService {
             String inputS3Uri = "s3://" + bucketName + "/" + inputKey;
             String outputS3Uri = "s3://" + bucketName + "/async-inference-output/";
             
-            // 2. SageMaker Async Endpoint 호출 (간단한 버전)
+            // 2. SageMaker Async Endpoint 호출
             InvokeEndpointAsyncRequest request = InvokeEndpointAsyncRequest.builder()
                     .endpointName(endpointName)
                     .inputLocation(inputS3Uri)
@@ -51,8 +51,8 @@ public class SageMakerAsyncService {
             
             InvokeEndpointAsyncResponse response = sageMakerClient.invokeEndpointAsync(request);
             
-            // 출력 위치 반환 (실제로는 response에서 가져와야 하지만 임시로 고정값)
-            return outputS3Uri + System.currentTimeMillis() + "_output.json";
+            // 실제 응답에서 출력 위치 반환
+            return response.outputLocation();
             
         } catch (Exception e) {
             throw new RuntimeException("Failed to invoke async endpoint: " + e.getMessage(), e);
@@ -76,6 +76,21 @@ public class SageMakerAsyncService {
             
         } catch (Exception e) {
             throw new RuntimeException("Failed to get result: " + e.getMessage(), e);
+        }
+    }
+    
+    public java.util.List<String> listS3Objects(String bucketName, String prefix) {
+        try {
+            return s3Client.listObjectsV2(software.amazon.awssdk.services.s3.model.ListObjectsV2Request.builder()
+                    .bucket(bucketName)
+                    .prefix(prefix)
+                    .build())
+                    .contents()
+                    .stream()
+                    .map(s3Object -> s3Object.key())
+                    .collect(java.util.stream.Collectors.toList());
+        } catch (Exception e) {
+            return java.util.Collections.emptyList();
         }
     }
 }
