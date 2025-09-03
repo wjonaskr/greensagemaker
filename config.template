@@ -1,0 +1,22 @@
+# 환경 설정 템플릿
+# 이 파일을 복사하여 config.properties로 만들고 실제 값으로 수정하세요
+
+# AWS 설정
+AWS_REGION=ap-northeast-2
+AWS_ACCOUNT_ID=your-account-id
+
+# S3 설정
+S3_BUCKET_NAME=your-unique-bucket-name
+
+# SNS 설정
+SNS_TOPIC_ARN=arn:aws:sns:your-region:your-account-id:sagemaker-async-notifications
+
+# SQS 설정
+SQS_QUEUE_URL=https://sqs.your-region.amazonaws.com/your-account-id/sagemaker-inference-results
+
+# SageMaker 설정
+SAGEMAKER_ENDPOINT_NAME=your-async-endpoint-name
+
+# 애플리케이션 설정
+SERVER_PORT=8080
+SPRING_PROFILES_ACTIVE=production
