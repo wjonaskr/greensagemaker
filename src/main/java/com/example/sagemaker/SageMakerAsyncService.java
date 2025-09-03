@@ -46,13 +46,12 @@ public class SageMakerAsyncService {
             InvokeEndpointAsyncRequest request = InvokeEndpointAsyncRequest.builder()
                     .endpointName(endpointName)
                     .inputLocation(inputS3Uri)
-                    .outputLocation(outputS3Uri)
                     .contentType("application/json")
                     .build();
             
             InvokeEndpointAsyncResponse response = sageMakerClient.invokeEndpointAsync(request);
             
-            return response.outputLocation();
+            return outputS3Uri;
             
         } catch (Exception e) {
             throw new RuntimeException("Failed to invoke async endpoint: " + e.getMessage(), e);
