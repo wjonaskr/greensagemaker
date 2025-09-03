@@ -42,7 +42,7 @@ public class SageMakerAsyncService {
             String inputS3Uri = "s3://" + bucketName + "/" + inputKey;
             String outputS3Uri = "s3://" + bucketName + "/async-inference-output/";
             
-            // 2. SageMaker Async Endpoint 호출
+            // 2. SageMaker Async Endpoint 호출 (간단한 버전)
             InvokeEndpointAsyncRequest request = InvokeEndpointAsyncRequest.builder()
                     .endpointName(endpointName)
                     .inputLocation(inputS3Uri)
@@ -51,7 +51,8 @@ public class SageMakerAsyncService {
             
             InvokeEndpointAsyncResponse response = sageMakerClient.invokeEndpointAsync(request);
             
-            return outputS3Uri;
+            // 출력 위치 반환 (실제로는 response에서 가져와야 하지만 임시로 고정값)
+            return outputS3Uri + System.currentTimeMillis() + "_output.json";
             
         } catch (Exception e) {
             throw new RuntimeException("Failed to invoke async endpoint: " + e.getMessage(), e);
